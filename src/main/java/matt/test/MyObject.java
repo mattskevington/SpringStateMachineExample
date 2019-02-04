@@ -4,7 +4,7 @@ import org.springframework.statemachine.StateMachine;
 
 import java.util.Random;
 
-public class MyObject {
+public class MyObject implements ObjectState{
 
     private int id;
 
@@ -17,6 +17,10 @@ public class MyObject {
         this.stateMachine = stateMachine;
         this.details = details;
         this.stateMachine.start();
+
+    }
+
+    public void restoreState(States state){
 
     }
 
@@ -34,5 +38,10 @@ public class MyObject {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public void sendEvent(Events event) {
+        this.stateMachine.sendEvent(event);
     }
 }
