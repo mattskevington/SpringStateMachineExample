@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.persist.DefaultStateMachinePersister;
@@ -12,6 +13,7 @@ import org.springframework.statemachine.persist.StateMachinePersister;
 import java.time.Instant;
 
 @SpringBootApplication
+@EnableMongoRepositories("matt.test.data")
 public class Application implements CommandLineRunner {
 
 //    @Autowired
@@ -32,7 +34,7 @@ public class Application implements CommandLineRunner {
         long start = Instant.now().toEpochMilli();
 
         //Let's try and persist the state and then restore it.
-        InMemoryStateMachinePersist persistMachine = new InMemoryStateMachinePersist();
+/*        InMemoryStateMachinePersist persistMachine = new InMemoryStateMachinePersist();
         StateMachinePersister<String, String, String> persist = new DefaultStateMachinePersister<>(persistMachine);
         StateMachine<String, String> machine1 = stringMachineFactory.getStateMachine("m1");
 
@@ -50,7 +52,7 @@ public class Application implements CommandLineRunner {
         System.out.println("Sending Event E2 to Machine2");
         machine2.sendEvent("E2");
         //Check that it has state of S1
-        assert machine2.getState().equals("S1");
+        assert machine2.getState().equals("S2");*/
 
         //Test for setting object state
 //        for (int x = 0; x < 100; x++) {
@@ -67,6 +69,9 @@ public class Application implements CommandLineRunner {
         //stateMachine.sendEvent(Events.E2);
         //System.out.println("Sending Event 3");
         //stateMachine.sendEvent(Events.E3);
+
+        MyTestClass testClass = new MyTestClass();
+        testClass.runTest();
         System.out.println("Run time: " + Instant.now().minusMillis(start).toEpochMilli());
     }
 }

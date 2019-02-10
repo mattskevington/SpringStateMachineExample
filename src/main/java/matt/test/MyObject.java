@@ -2,46 +2,35 @@ package matt.test;
 
 import org.springframework.statemachine.StateMachine;
 
-import java.util.Random;
+/**
+ * Created by mskevington on 09/02/2019.
+ */
+public class MyObject implements ObjectStateEvent {
 
-public class MyObject implements ObjectState{
-
-    private int id;
-
-    private StateMachine<States, Events> stateMachine;
+    private StateMachine<String, String> stateMachine;
+    private String id;
     private String details;
 
-    public MyObject(StateMachine stateMachine, String details){
-        this.id = new Random().nextInt();
-
+    public MyObject(StateMachine<String, String> stateMachine, String id, String details) {
         this.stateMachine = stateMachine;
+        this.id = id;
         this.details = details;
-        this.stateMachine.start();
-
     }
 
-    public void restoreState(States state){
-
+    public StateMachine<String, String> getStateMachine() {
+        return stateMachine;
     }
 
-    public StateMachine<States, Events> getStateMachine(){
-        return this.stateMachine;
+    public String getId() {
+        return id;
     }
 
     public String getDetails() {
         return details;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
-    }
-
-    public int getId() {
-        return id;
-    }
-
     @Override
-    public void sendEvent(Events event) {
+    public void sendEvent(String event) {
         this.stateMachine.sendEvent(event);
     }
 }
