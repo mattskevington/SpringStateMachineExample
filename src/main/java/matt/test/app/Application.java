@@ -1,29 +1,32 @@
-package matt.test;
+package matt.test.app;
 
+import matt.test.MyTestClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.config.StateMachineFactory;
-import org.springframework.statemachine.persist.DefaultStateMachinePersister;
-import org.springframework.statemachine.persist.StateMachinePersister;
 
 import java.time.Instant;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "matt.test")
 @EnableMongoRepositories("matt.test.data")
+@Configuration
 public class Application implements CommandLineRunner {
 
 //    @Autowired
 //    private StateMachineFactory<States, Events> machineFactory;
 
-    @Autowired
+ /*   @Autowired
     private StateMachineFactory<String, String> stringMachineFactory;
 
     @Autowired
-    private StateMachine<States, Events> stateMachine;
+    private StateMachine<States, Events> stateMachine;*/
+
+    @Autowired
+    private MyTestClass myTestClass;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -70,8 +73,7 @@ public class Application implements CommandLineRunner {
         //System.out.println("Sending Event 3");
         //stateMachine.sendEvent(Events.E3);
 
-        MyTestClass testClass = new MyTestClass();
-        testClass.runTest();
+        myTestClass.runTest();
         System.out.println("Run time: " + Instant.now().minusMillis(start).toEpochMilli());
     }
 }

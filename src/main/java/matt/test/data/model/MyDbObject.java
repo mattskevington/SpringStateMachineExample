@@ -1,15 +1,17 @@
-package matt.test;
+package matt.test.data.model;
 
+import matt.test.enums.States;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.statemachine.StateMachineContext;
+
+import java.util.UUID;
 
 @Document
 public class MyDbObject {
 
     @Id
-    private String id;
+    private UUID id;
 
     private String details;
     public MyDbObject(String details){
@@ -18,12 +20,9 @@ public class MyDbObject {
     }
 
     @PersistenceConstructor
-    public MyDbObject(String id, String details) {
+    public MyDbObject(UUID id, String details) {
         this.details = details;
-    }
-
-    public void restoreState(States state){
-
+        this.id = id;
     }
 
     public String getDetails() {
@@ -34,7 +33,7 @@ public class MyDbObject {
         this.details = details;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 

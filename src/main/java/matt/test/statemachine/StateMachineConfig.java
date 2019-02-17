@@ -1,5 +1,7 @@
-package matt.test;
+package matt.test.statemachine;
 
+import matt.test.enums.Events;
+import matt.test.enums.States;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;

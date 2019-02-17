@@ -1,27 +1,31 @@
-package matt.test;
+package matt.test.model;
 
+import matt.test.enums.Events;
+import matt.test.enums.States;
 import org.springframework.statemachine.StateMachine;
+
+import java.util.UUID;
 
 /**
  * Created by mskevington on 09/02/2019.
  */
 public class MyObject implements ObjectStateEvent {
 
-    private StateMachine<String, String> stateMachine;
-    private String id;
+    private StateMachine<States, Events> stateMachine;
+    private UUID id;
     private String details;
 
-    public MyObject(StateMachine<String, String> stateMachine, String id, String details) {
+    public MyObject(StateMachine<States, Events> stateMachine, UUID id, String details) {
         this.stateMachine = stateMachine;
         this.id = id;
         this.details = details;
     }
 
-    public StateMachine<String, String> getStateMachine() {
+    public StateMachine<States, Events> getStateMachine() {
         return stateMachine;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -30,7 +34,7 @@ public class MyObject implements ObjectStateEvent {
     }
 
     @Override
-    public void sendEvent(String event) {
+    public void sendEvent(Events event) {
         this.stateMachine.sendEvent(event);
     }
 }
