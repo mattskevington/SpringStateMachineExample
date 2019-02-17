@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
 
+/**
+ * This object is used as a dto for the MyObject class.
+ */
 @Document
 public class MyDbObject {
 
@@ -14,15 +17,22 @@ public class MyDbObject {
     private UUID id;
 
     private String details;
-    public MyDbObject(String details){
-        this.details = details;
 
+    public String getState() {
+        return state;
     }
 
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    private String state;
+
     @PersistenceConstructor
-    public MyDbObject(UUID id, String details) {
+    public MyDbObject(UUID id, String details, String state) {
         this.details = details;
         this.id = id;
+        this.state = state;
     }
 
     public String getDetails() {

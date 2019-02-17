@@ -29,6 +29,7 @@ public class MyObjectPersistenceService {
 
     @Autowired
     private MyDbObjectHandler dbObjectHandler;
+
     @Autowired
     @Qualifier("enum-state-machine-factory")
     private StateMachineFactory<States, Events> enumMachineFactory;
@@ -50,7 +51,7 @@ public class MyObjectPersistenceService {
         //Extract State Context from machine
         persister.persist(myObject.getStateMachine(), myObject.getStateMachine().getUuid());
         //TODO: There could by race condition here between state save and object save.
-        MyDbObject dbObject = new MyDbObject(myObject.getId(), myObject.getDetails());
+        MyDbObject dbObject = new MyDbObject(myObject.getId(), myObject.getDetails(), myObject.getCurrentStateString());
         dbObjectHandler.saveMyObject(dbObject);
     }
 
@@ -59,12 +60,18 @@ public class MyObjectPersistenceService {
         StateMachine<States, Events> machine = enumMachineFactory.getStateMachine();
         machine.start();
         persister.persist(machine, machine.getUuid());
-        MyDbObject dbObject = new MyDbObject(machine.getUuid(), details);
+        MyDbObject dbObject = new MyDbObject(machine.getUuid(), details, machine.getState().getId().name());
         dbObjectHandler.addMyObject(dbObject);
         return new MyObject(machine, machine.getUuid(), details);
     }
+
+    /**
+     * Converts MyDbObject to MyObject and restores its state
+     * @param dbObject
+     * @return
+     * @throws Exception
+     */
     private MyObject convert(Optional<MyDbObject> dbObject) throws Exception {
-        //StateMachinePersister<String, String, String> persist = new DefaultStateMachinePersister(objectStateService);
 
         MyDbObject myDbObject = dbObject.get();
 

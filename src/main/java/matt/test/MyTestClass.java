@@ -5,7 +5,6 @@ import matt.test.model.MyObject;
 import matt.test.service.MyObjectPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  * Created by mskevington on 10/02/2019.

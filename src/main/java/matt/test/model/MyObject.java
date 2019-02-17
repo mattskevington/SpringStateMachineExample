@@ -8,6 +8,9 @@ import java.util.UUID;
 
 /**
  * Created by mskevington on 09/02/2019.
+ * This class is used as an example of associating a State Machine with an object.  The object's
+ * state context is maintained in a database, however the StateMachine object itself is never
+ * persisted to the database but recreated from the context when retrieved from the database.
  */
 public class MyObject implements ObjectStateEvent {
 
@@ -36,5 +39,9 @@ public class MyObject implements ObjectStateEvent {
     @Override
     public void sendEvent(Events event) {
         this.stateMachine.sendEvent(event);
+    }
+
+    public String getCurrentStateString(){
+        return this.stateMachine.getState().getId().name();
     }
 }
