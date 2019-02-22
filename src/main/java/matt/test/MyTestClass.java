@@ -1,8 +1,8 @@
 package matt.test;
 
 import matt.test.enums.Events;
-import matt.test.model.MyObject;
-import matt.test.service.MyObjectPersistenceService;
+import matt.test.model.PizzaOrder;
+import matt.test.service.PizzaOrderPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,17 +13,17 @@ import org.springframework.stereotype.Component;
 public class MyTestClass {
 
     @Autowired
-    private MyObjectPersistenceService persistenceService;
+    private PizzaOrderPersistenceService persistenceService;
 
     public void runTest() throws Exception {
-        MyObject newMyObject = persistenceService.createMyObject("Test object one");
-        System.out.println("Current object state: " + newMyObject.getStateMachine().getState().getId());
-        newMyObject.sendEvent(Events.E1);
-        System.out.println("Current object state: " + newMyObject.getStateMachine().getState().getId());
-        persistenceService.saveMyObject(newMyObject);
+        PizzaOrder newPizzaOrder = persistenceService.createMyObject("Test object one");
+        System.out.println("Current object state: " + newPizzaOrder.getStateMachine().getState().getId());
+        newPizzaOrder.sendEvent(Events.ACCEPT_ORDER);
+        System.out.println("Current object state: " + newPizzaOrder.getStateMachine().getState().getId());
+        persistenceService.saveMyObject(newPizzaOrder);
 
         //Try and get it back from the database
-        MyObject savedObject = persistenceService.getCurrentMyObject(newMyObject.getId());
+        PizzaOrder savedObject = persistenceService.getCurrentPizzaOrder(newPizzaOrder.getId());
         System.out.println("Current object state: " + savedObject.getStateMachine().getState().getId());
     }
 }

@@ -17,36 +17,30 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 /**
- * Created by mskevington on 10/02/2019.
+ * This class wires calls to persist a StateMachine context into an insert into a Mongo database.<br>
+ * <b>NOTE:</b> The MongoDbStateMachineRepository is autowired from MongoPizzaOrderStateMachineRepo.
  */
 @Configuration
 public class PersistConfig {
 
     @Bean
-    public StateMachineRuntimePersister<States, Events, UUID> mongoPersist(
+    public StateMachineRuntimePersister<States, Events, UUID> mongoPersist (
             MongoDbStateMachineRepository mongoRepository) {
 
         return new MongoDbPersistingStateMachineInterceptor<States, Events, UUID>(mongoRepository);
     }
 
+    /**
+     * Uses the mongoPersist bean to handle the actual persisting to the database.
+     *
+     * @param defaultPersist the mechanism that handles the persistence to storage.
+     * @return A Persister that handles persisting StateMachine context to a persistence storage.
+     */
     @Bean
-    public StateMachinePersister<States, Events, UUID> persister(
+    public StateMachinePersister<States, Events, UUID> persister (
             StateMachinePersist<States, Events, UUID> defaultPersist) {
 
         return new DefaultStateMachinePersister<>(defaultPersist);
     }
 
-
-/*    @Override
-    public void write(StateMachineContext<String, String> context, String contextObj) throws Exception {
-        //It should return the object after saving so we don't get out of sync with the db.
-        objectStateHandler.saveObjectState(new ObjectState(context,contextObj));
-    }
-
-    @Override
-    public StateMachineContext<String, String> read(String contextObj) throws Exception {
-        Optional<ObjectState> state = objectStateHandler.getObjectState(contextObj);
-        ObjectState objState = state.orElseThrow(() -> {return new StateException("State for " + contextObj + " not found in DB");});
-        return objState.getContext();
-    }*/
 }

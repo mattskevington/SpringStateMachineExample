@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
  * Created by mskevington on 17/02/2019.
  */
 @Repository
-public interface MyMongoStateMachineRepo extends MongoDbStateMachineRepository {
+public interface MongoPizzaOrderStateMachineRepo extends MongoDbStateMachineRepository {
 }

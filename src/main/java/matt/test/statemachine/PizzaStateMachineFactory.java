@@ -17,34 +17,40 @@ import org.springframework.statemachine.state.State;
 
 @Configuration
 @EnableStateMachineFactory(name = "enum-state-machine-factory")
-public class MyStateMachineFactory extends EnumStateMachineConfigurerAdapter<States, Events> {
+public class PizzaStateMachineFactory extends EnumStateMachineConfigurerAdapter<States, Events> {
     @Override
     public void configure(StateMachineStateConfigurer<States, Events> states) throws Exception {
-         states.withStates().initial(States.SI, action())
-                 .state(States.SI, action(), action())
-                 .state(States.S1, action(), action())
-                 .state(States.S2, action(), action());
+         states.withStates().initial(States.NEW, action())
+                 .state(States.RECEIVED, action(), action())
+                 .state(States.ORDER_ACCEPTED, action(), action())
+                 .state(States.IN_PROGRESS, action(), action())
+                 .state(States.COMPLETE, action(), action());
     }
 
     @Override
     public void configure(StateMachineTransitionConfigurer<States, Events> transitions) throws Exception {
         transitions
                 .withExternal()
-                .source(States.SI)
-                .target(States.S1)
-                .event(Events.E1)
-                .action(action(), errorAction())
-                .guard(guard()).and()
+                    .source(States.NEW)
+                    .target(States.RECEIVED)
+                    .event(Events.RECEIVE_ORDER)
+                    .action(action(), errorAction())
+                    .guard(guard()).and()
                 .withExternal()
-                .source(States.S1)
-                .target(States.S2)
-                .event(Events.E2)
-                .guard(guard()).and()
+                    .source(States.RECEIVED)
+                    .target(States.ORDER_ACCEPTED)
+                    .target(States.ORDER_REJECTED)
+                    .event(Events.ACCEPT_ORDER)
+                    .guard(guard()).and()
                 .withExternal()
-                .source(States.S2)
-                .target(States.S1)
-                .event(Events.E3)
-                .guard(guard());
+                    .source(States.ORDER_ACCEPTED)
+                    .target(States.IN_PROGRESS)
+                    .event(Events.START_ORDER)
+                    .guard(guard()).and()
+                .withExternal()
+                    .source(States.IN_PROGRESS)
+                    .target(States.COMPLETE)
+                    .event(Events.COMPLETE_ORDER);
     }
 
     @Override
@@ -76,7 +82,6 @@ public class MyStateMachineFactory extends EnumStateMachineConfigurerAdapter<Sta
         return (context) -> {
             System.out.println("Guarding against: " + context.getStage().name());
             return true;
-            //return context.getStage().equals(StateContext.Stage.STATE_ENTRY);
         };
 
     }

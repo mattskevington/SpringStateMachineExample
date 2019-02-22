@@ -1,5 +1,5 @@
 package matt.test.enums;
 
 public enum States {
-    SI, S1, S2
+    NEW, RECEIVED, ORDER_ACCEPTED, ORDER_REJECTED, IN_PROGRESS, COMPLETE, CANCELLED
 }

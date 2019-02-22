@@ -1,6 +1,7 @@
 package matt.test.model;
 
 import matt.test.enums.Events;
+import matt.test.enums.PizzaOrderType;
 import matt.test.enums.States;
 import org.springframework.statemachine.StateMachine;
 
@@ -12,16 +13,16 @@ import java.util.UUID;
  * state context is maintained in a database, however the StateMachine object itself is never
  * persisted to the database but recreated from the context when retrieved from the database.
  */
-public class MyObject implements ObjectStateEvent {
+public class PizzaOrder implements ObjectStateEvent {
 
     private StateMachine<States, Events> stateMachine;
     private UUID id;
-    private String details;
+    private PizzaOrderType pizzaOrderType;
 
-    public MyObject(StateMachine<States, Events> stateMachine, UUID id, String details) {
+    public PizzaOrder(StateMachine<States, Events> stateMachine, UUID id, PizzaOrderType pizzaOrderType) {
         this.stateMachine = stateMachine;
         this.id = id;
-        this.details = details;
+        this.pizzaOrderType = pizzaOrderType;
     }
 
     public StateMachine<States, Events> getStateMachine() {
@@ -32,8 +33,8 @@ public class MyObject implements ObjectStateEvent {
         return id;
     }
 
-    public String getDetails() {
-        return details;
+    public PizzaOrderType getPizzaOrderType() {
+        return pizzaOrderType;
     }
 
     @Override
