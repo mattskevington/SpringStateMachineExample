@@ -43,6 +43,10 @@ public class PizzaOrder implements ObjectStateEvent {
     }
 
     public String getCurrentStateString(){
-        return this.stateMachine.getState().getId().name();
+        return this.stateMachine.getState().getIds().toString();
+    }
+
+    public boolean getCancelledState() {
+        return this.stateMachine.getExtendedState().get("cancelled", Boolean.class);
     }
 }

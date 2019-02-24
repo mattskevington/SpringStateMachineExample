@@ -46,7 +46,7 @@ public class PizzaOrderPersistenceService {
      * @param pizzaOrder The PizzaOrder to save.
      * @throws Exception Problem persisting state to the database.
      */
-    public void saveMyObject(PizzaOrder pizzaOrder) throws Exception {
+    public void savePizzaOrder(PizzaOrder pizzaOrder) throws Exception {
         //Extract State Context from machine
         persister.persist(pizzaOrder.getStateMachine(), pizzaOrder.getStateMachine().getUuid());
         //TODO: There could by race condition here between state save and object save.
@@ -60,11 +60,11 @@ public class PizzaOrderPersistenceService {
      * @return a new PizzaOrder with its own state machine.
      * @throws Exception
      */
-    public PizzaOrder createMyObject(PizzaOrderType pizzaOrderType) throws Exception {
+    public PizzaOrder createNewPizzaOrder(PizzaOrderType pizzaOrderType) throws Exception {
         StateMachine<States, Events> machine = enumMachineFactory.getStateMachine();
         machine.start();
         persister.persist(machine, machine.getUuid());
-        DbPizzaOrder dbObject = new DbPizzaOrder(machine.getUuid(), pizzaOrderType, machine.getState().getId().name());
+        DbPizzaOrder dbObject = new DbPizzaOrder(machine.getUuid(), pizzaOrderType, machine.getState().getIds().toString());
         dbObjectHandler.addDbPizzaOrder(dbObject);
         return new PizzaOrder(machine, machine.getUuid(), pizzaOrderType);
     }
