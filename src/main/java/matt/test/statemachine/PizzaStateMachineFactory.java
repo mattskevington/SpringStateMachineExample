@@ -17,6 +17,36 @@ import org.springframework.statemachine.state.State;
 
 import java.util.Map;
 
+/**
+ * <p>
+ *      This state machine factory demonstrates handling States for an Order.  There are 6 states:
+ * </p>
+ * <p>
+ *      NEW - The initial State<br>
+ *      RECEIVED - When accepting an order.<br>
+ *      ORDER_ACCEPTED - When order has been validated<br>
+ *      ORDER_REJECTED - When an order doesn't pass validation<br>
+ *      IN_PROGRESS - When an order is being packaged<br>
+ *      COMPLETE - When an order is complete<br>
+ *      <i>CANCELLED or NOT_CANCELLED</i> - Sub state for some States
+ * </p>
+ * <p>
+ *      There are two ways to handle a Cancelled order; changing its sub-state to CANCELLED
+ *      or setting an ExtendedState property to 'cancelled'.
+ * </p>
+ * <p>
+ *      I prefer the latter as it gives you less configuration (you don't need a different event
+ *      to cancel from each state).
+ * </p>
+ * <p>
+ *      The order each state transition is handled is as follows:<br>
+ *          1. Guard<br>
+ *          2. Transition Action<br>
+ *          3. Exit Action (from last state)<br>
+ *          4. Entry Action (to new state)<br>
+ *          5. Listener<br>
+ * </p>
+ */
 @Configuration
 @EnableStateMachineFactory(name = "enum-state-machine-factory")
 public class PizzaStateMachineFactory extends EnumStateMachineConfigurerAdapter<States, Events> {
