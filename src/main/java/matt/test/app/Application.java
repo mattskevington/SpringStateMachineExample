@@ -33,9 +33,9 @@ public class Application implements CommandLineRunner {
 
 
 
-        myTestClass.runCancelTestExtendedState();
+//        myTestClass.runCancelTestExtendedState();
 //        myTestClass.runCancelTestSubState();
-//        myTestClass.sunnyDayTest();
+        myTestClass.sunnyDayTest();
         System.out.println("Run time: " + Instant.now().minusMillis(start).toEpochMilli());
     }
 }

@@ -46,6 +46,8 @@ public class PizzaStateMachineFactory extends EnumStateMachineConfigurerAdapter<
 
     @Override
     public void configure(StateMachineTransitionConfigurer<States, Events> transitions) throws Exception {
+        //The first two guards use the Sub-state CANCELLED to guard against cancelled.
+        //The rest use the Extended State 'cancelled' property to guard against cancelled.
         transitions
                 .withExternal()
                     .source(States.NEW)
@@ -57,30 +59,32 @@ public class PizzaStateMachineFactory extends EnumStateMachineConfigurerAdapter<
                     .source(States.RECEIVED)
                     .target(States.CANCELLED)
                     .event(Events.CANCEL_ORDER)
-                    .guard(guard()).and()
+                    .guard(guard())
+                    .action(transitionAction()).and()
                 .withExternal()
                     .source(States.RECEIVED)
                     .target(States.ORDER_ACCEPTED)
                     .event(Events.ACCEPT_ORDER)
-                    .guard(guard()).and()
+                    .guard(guard())
+                    .action(transitionAction()).and()
                 .withExternal()
                     .source(States.ORDER_ACCEPTED)
                     .target(States.IN_PROGRESS)
                     .event(Events.START_ORDER)
-                    .guard(guard()).and()
+                    .guard(cancelGuard()).action(transitionAction()).and()
                 .withExternal()
                     .source(States.IN_PROGRESS)
                     .target(States.COMPLETE)
                     .event(Events.COMPLETE_ORDER)
-                    .guard(cancelGuard()).and()
+                    .guard(cancelGuard()).action(transitionAction()).and()
                 .withInternal()
                     .source(States.ORDER_ACCEPTED)
                     .event(Events.CANCEL_ORDER)
                     .action(switchCancelAction()).and()
                 .withInternal()
-                .source(States.IN_PROGRESS)
-                .event(Events.CANCEL_ORDER)
-                .action(switchCancelAction());
+                    .source(States.IN_PROGRESS)
+                    .event(Events.CANCEL_ORDER)
+                    .action(switchCancelAction());
     }
 
     @Override
@@ -123,6 +127,7 @@ public class PizzaStateMachineFactory extends EnumStateMachineConfigurerAdapter<
             Map<Object, Object> variables = context.getExtendedState().getVariables();
             Boolean cancelled = context.getExtendedState().get("cancelled", Boolean.class);
             if (cancelled == null){
+                System.out.println("Initialising cancelled state to FALSE");
                 variables.put("cancelled", Boolean.FALSE);
             } else if (!cancelled) {
                 System.out.println("Switching cancelled to TRUE");
